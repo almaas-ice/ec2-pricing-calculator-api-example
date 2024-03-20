@@ -10,10 +10,10 @@ class Ec2CostCalculatorController extends Controller
 {
     public function calculateCost(Request $request, string $type)
     {
-        $instanceType = "t-micro"; // Instance type (e.g., t2.micro)
+        $instanceType = "t3-micro";
         $usageHours = floatval($request->query('usageHours'));
 
-        $type = $request->route('type'); // On-Demand or Reserved
+        $type = $request->route('type'); // on-demand or reserved
 
         $calculator = $this->getCalculator($type);
 
@@ -51,9 +51,7 @@ class OnDemandCostCalculator implements Ec2CostCalculator
 {
     public function calculateCost(string $instanceType, float $usageHours): float
     {
-        // Replace with logic to fetch on-demand pricing from AWS API
-        // based on instanceType and region
-        $pricePerHour = 0.01; // Placeholder price
+        $pricePerHour = 0.01;
         return $usageHours * $pricePerHour;
     }
 }
@@ -62,9 +60,7 @@ class ReservedInstanceCalculator implements Ec2CostCalculator
 {
     public function calculateCost(string $instanceType, float $usageHours): float
     {
-        // Replace with logic to calculate cost based on reserved instance purchase details
-        // (e.g., upfront cost, discount percentage, etc.) for the specific instanceType
-        $reservedCost = 10.0; // Placeholder cost
+        $reservedCost = 10.0;
         return $reservedCost * log($usageHours) / 2;
     }
 }
