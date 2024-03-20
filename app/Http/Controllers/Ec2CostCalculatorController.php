@@ -17,7 +17,7 @@ class Ec2CostCalculatorController extends Controller
 
         $calculator = $this->getCalculator($type);
 
-        $cost = $calculator->calculateCost($instanceType, $usageHours);
+        $cost = $calculator->calculateCost($usageHours);
 
         return [
             "instanceType" => $instanceType,
@@ -44,12 +44,12 @@ class Ec2CostCalculatorController extends Controller
 
 interface Ec2CostCalculator
 {
-    public function calculateCost(string $instanceType, float $usageHours): float;
+    public function calculateCost(float $usageHours): float;
 }
 
 class OnDemandCostCalculator implements Ec2CostCalculator
 {
-    public function calculateCost(string $instanceType, float $usageHours): float
+    public function calculateCost(float $usageHours): float
     {
         $pricePerHour = 0.01;
         return $usageHours * $pricePerHour;
@@ -58,7 +58,7 @@ class OnDemandCostCalculator implements Ec2CostCalculator
 
 class ReservedInstanceCalculator implements Ec2CostCalculator
 {
-    public function calculateCost(string $instanceType, float $usageHours): float
+    public function calculateCost(float $usageHours): float
     {
         $reservedCost = 10.0;
         return $reservedCost * log($usageHours) / 2;
